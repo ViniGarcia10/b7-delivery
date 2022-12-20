@@ -1,30 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "../../@types/Product";
+import { useAppContext } from "../../context/AppContext";
 import BurguerImg from "../../public/tmp/burguer-01.png";
 import styles from "./styles.module.css";
 
 type PropsItemProduct = {
   data: Product;
-  primaryColor: string;
-  secundaryColor: string;
 };
 
-export const ProductItem = ({
-  data,
-  primaryColor,
-  secundaryColor,
-}: PropsItemProduct) => {
+export const ProductItem = ({ data }: PropsItemProduct) => {
+  const primaryColor = useAppContext().tenant?.mainColor;
+  const secundaryColor = useAppContext().tenant?.secundColor;
+  const slug = useAppContext().tenant?.slug;
+
   return (
     <Link
-      href={`/B7burguer/product/${data.id}`}
+      href={`/${slug}/product/${data.id}`}
       style={{ textDecoration: "none" }}
     >
       <div className={styles.container} key={data.id}>
         <div
           className={styles.head}
           style={{
-            background: secundaryColor || "var(--secundary-color-default)",
+            background: secundaryColor,
           }}
         />
         <div className={styles.description}>
@@ -34,7 +33,7 @@ export const ProductItem = ({
           <span
             className={styles.price}
             style={{
-              color: primaryColor || "var(--primary-color-default)",
+              color: primaryColor,
             }}
           >
             {data.price}
