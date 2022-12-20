@@ -1,0 +1,11 @@
+.swiper {
+  background: var(--white-color);
+}
+
+.imgBanner {
+  height: 90%;
+  width: 90%;
+  margin: 1.5rem;
+  border-radius: 15px;
+  box-shadow: var(--shadow-default);
+}
