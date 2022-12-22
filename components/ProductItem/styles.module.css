@@ -2,8 +2,9 @@
   background: var(--white-color);
   box-shadow: var(--shadow-default);
   border-radius: var(--border-radius);
-  height: 178px;
-  width: 178px;
+  height: 195px;
+  width: 175px auto;
+  overflow: hidden;
   position: relative;
 }
 
