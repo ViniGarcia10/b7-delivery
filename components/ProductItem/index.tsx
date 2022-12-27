@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "../../@types/Product";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../context/app";
+import { useFormatter } from "../../libs/useFormatter";
 import BurguerImg from "../../public/tmp/burguer-01.png";
 import styles from "./styles.module.css";
 
@@ -13,6 +14,7 @@ export const ProductItem = ({ data }: PropsItemProduct) => {
   const primaryColor = useAppContext().tenant?.mainColor;
   const secundaryColor = useAppContext().tenant?.secundColor;
   const slug = useAppContext().tenant?.slug;
+  const priceFormatter = useFormatter();
 
   return (
     <Link
@@ -27,7 +29,12 @@ export const ProductItem = ({ data }: PropsItemProduct) => {
           }}
         />
         <div className={styles.description}>
-          <Image className={styles.imgBurguer} src={BurguerImg} alt="burguer" />
+          <Image
+            className={styles.imgBurguer}
+            src={BurguerImg}
+            priority
+            alt="burguer"
+          />
           <h3 className={styles.type}>{data.categoryName}</h3>
           <p className={styles.name}>{data.name}</p>
           <span
@@ -36,7 +43,7 @@ export const ProductItem = ({ data }: PropsItemProduct) => {
               color: primaryColor,
             }}
           >
-            {data.price}
+            {priceFormatter.formatPrice(data.price)}
           </span>
         </div>
       </div>

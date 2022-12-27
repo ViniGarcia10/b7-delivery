@@ -1,24 +1,31 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Product } from "../../@types/Product";
 import { Tenant } from "../../@types/Tenant";
 import { Banner } from "../../components/banner";
+import { Icon } from "../../components/Icon";
 import { ProductItem } from "../../components/ProductItem";
 import { SearchInput } from "../../components/SearchInput";
-import { useAppContext } from "../../context/AppContext";
+import { Sidebar } from "../../components/Sidebar";
+import { useAppContext } from "../../context/app";
 import { _useApi } from "../../libs/hooks/useApi";
 import styles from "../../styles/Home.module.css";
 
 type PropsTenant = {
   tenantInfo: Tenant;
+  products: Product[];
 };
 
-function Home({ tenantInfo }: PropsTenant) {
-  const { tenant, setTenant } = useAppContext();
+function Home({ tenantInfo, products }: PropsTenant) {
+  const { tenant, sidebar, setTenant, setSidebar } = useAppContext();
+  const [listProducts, setListProducts] = useState<Product[]>(products);
 
   useEffect(() => {
-    setTenant(tenantInfo);
-  }, [setTenant, tenantInfo]);
+    if (tenant != tenantInfo) {
+      setTenant(tenantInfo);
+    }
+  }, [setTenant, tenant, tenantInfo]);
 
   const handleSearch = (handleSearch: string) => {
     console.log(`Você esta procurando por ${handleSearch}`);
@@ -41,92 +48,60 @@ function Home({ tenantInfo }: PropsTenant) {
                 O que deseja para hoje?
               </div>
             </div>
-            <div className={styles.headerTopRight}>
+            <div
+              className={styles.headerTopRight}
+              onClick={() => {
+                setSidebar(true);
+              }}
+            >
               <div className={styles.menuButton}>
                 <div
                   className={styles.menuButtonLine}
                   style={{
-                    background:
-                      tenant?.mainColor,
+                    background: tenant?.mainColor,
                   }}
                 ></div>
                 <div
                   className={styles.menuButtonLine}
                   style={{
-                    background:
-                      tenant?.mainColor,
+                    background: tenant?.mainColor,
                   }}
                 ></div>
                 <div
                   className={styles.menuButtonLine}
                   style={{
-                    background:
-                      tenant?.mainColor,
+                    background: tenant?.mainColor,
                   }}
                 ></div>
               </div>
             </div>
+            {sidebar && <Sidebar />}
           </div>
           <div className={styles.headerBottom}>
-            <SearchInput
-              onSearch={handleSearch}
-            />
+            <SearchInput onSearch={handleSearch} />
           </div>
         </header>
         <main>
-          <Banner />
-
-          <div className={styles.grid}>
-            <ProductItem
-              data={{
-                id: 1,
-                name: "Texas Burger",
-                categoryName: "Tradicional",
-                image: "/tmp/burguer-01.png",
-                price: "R$29,50",
-              }}
-            />
-
-            <ProductItem
-              data={{
-                id: 1,
-                name: "Texas Burger",
-                categoryName: "Tradicional",
-                image: "/tmp/burguer-01.png",
-                price: "R$29,50",
-              }}
-            />
-
-            <ProductItem
-              data={{
-                id: 1,
-                name: "Texas Burger",
-                categoryName: "Tradicional",
-                image: "/tmp/burguer-01.png",
-                price: "R$29,50",
-              }}
-            />
-
-            <ProductItem
-              data={{
-                id: 1,
-                name: "Texas Burger",
-                categoryName: "Tradicional",
-                image: "/tmp/burguer-01.png",
-                price: "R$29,50",
-              }}
-            />
-
-            <ProductItem
-              data={{
-                id: 1,
-                name: "Texas Burger",
-                categoryName: "Tradicional",
-                image: "/tmp/burguer-01.png",
-                price: "R$29,50",
-              }}
-            />
-          </div>
+          {false ? (
+            <>
+              <div className={styles.descSearchResult}>
+                Procurando por: <strong>Pizza</strong>
+              </div>
+              <div  className={styles.containerResult}>
+                <Icon name="notIcons" color={tenant?.secundColor} />
+                <h2>Ops! Não há itens com este nome</h2>
+              </div>
+            </>
+          ) : (
+            <>
+              <Banner />
+              <div className={styles.grid}>
+                {listProducts.map((item, index) => (
+                  <ProductItem key={index} data={item} />
+                ))}
+              </div>
+            </>
+          )}
         </main>
       </div>
     )
@@ -137,17 +112,20 @@ export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { tenant: tenantSlug } = ctx.query;
-  const api = _useApi();
+  const api = _useApi(tenantSlug as string);
 
-  const tenantInfo = await api.getTenant(tenantSlug as string);
+  const tenantInfo = await api.getTenant();
 
   if (!tenantInfo) {
     return { redirect: { destination: "/", permanent: false } };
   }
 
+  const products = await api.getAllProducts();
+
   return {
     props: {
       tenantInfo,
+      products,
     },
   };
 };

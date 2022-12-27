@@ -1,0 +1,72 @@
+.container {
+  background-color: var(--white-color);
+  position: relative;
+}
+
+.headerArea {
+  position: absolute;
+  left: 24px;
+  top: 13px;
+  right: 24px;
+}
+
+.headerBg {
+  height: 350px;
+  background-color: #333;
+  background-image: url("../assets/bgEfeito.png");
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
+.productImage {
+  display: flex;
+  justify-content: center;
+  margin-top: -205px;
+}
+
+.containerDescription {
+  margin: 0 24px;
+}
+
+.category {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 19px;
+}
+
+.nameProd {
+  font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 48px;
+  margin: 5px 0 24px 0;
+}
+
+.description {
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 24px;
+  color: var(--black-color-80);
+  margin: 24px 0 32px 0;
+}
+
+.quantDesc {
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 19px;
+  margin-bottom: 16px;
+}
+
+.comboBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.priceDisplay {
+  color: #fb9400;
+  font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 48px;
+  text-align: right;
+}

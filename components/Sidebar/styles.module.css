@@ -1,0 +1,36 @@
+.container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  background: var(--white-color);
+  z-index: 2;
+}
+
+.list {
+  display: flex;
+  margin-bottom: 339px;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.listItem {
+  color: #6a7d8b;
+  font-weight: 400;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0 10px 68px;
+  gap: 24px;
+}
+
+.exit {
+  color: #6a7d8b;
+  font-weight: 400;
+  margin-left: 68px;
+  display: flex;
+  gap: 24px;
+  bottom: 30px;
+  position: absolute;
+  width: 100%;
+  padding: 10px 0;
+}

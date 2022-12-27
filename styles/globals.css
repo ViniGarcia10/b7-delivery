@@ -4,16 +4,19 @@
   --primary-color-default: #bdbdbd;
   --secundary-color-default: #ffffff;
   
+  --black-color-80:#1B1B1B80;
   --black-color: #1b1b1b; 
   --white-color: #ffffff;
 
-  --gray-color-600: #6a7d8b;
+  --gray-color-700: #6a7d8b;
+  --gray-color-600: #96A3AB;
   --gray-color-500: #979797;
-  --gray-color-200: #979797cc;
+  --gray-color-200: #979797cc; 
   --gray-color-100: #f9f9fb;
 
   --shadow-default: 0px 8px 40px rgba(0, 0, 0, 0.08);
   --border-radius: 8px;
+  --transparent: rgba(0,0,0,0);
 }
 
 * {

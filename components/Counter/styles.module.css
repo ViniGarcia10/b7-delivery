@@ -1,0 +1,43 @@
+.comboBoxOptions {
+    display: flex;
+    flex-direction: row;
+  }
+  .btnMinus {
+    width: 48px;
+    height: 48px;
+    background: #f2f4f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #96A3AB;
+    border-radius: 4px 0px 0px 4px;
+  }
+  .displayBtn {
+    width: 48px;
+    height: 48px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    border: 1px solid #F2F4F5;
+  }
+  .btnPlus {
+    width: 48px;
+    height: 48px;
+    background: #fb9400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--white-color);
+    border-radius: 0px 4px 4px 0px;
+  }

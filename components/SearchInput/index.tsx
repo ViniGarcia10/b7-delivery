@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAppContext } from "../../context/AppContext";
+import { useAppContext } from "../../context/app";
 import { SearchIcon } from "../../utils/SearchIcon";
 import styles from "./styles.module.css";
 
