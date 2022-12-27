@@ -21,6 +21,7 @@ function Login({ tenantInfo }: PropsTenant) {
   const router = useRouter();
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const [hasEye, setHasEye] = useState(true);
 
   useEffect(() => {
     if (tenant != tenantInfo) {
@@ -62,6 +63,8 @@ function Login({ tenantInfo }: PropsTenant) {
             typeInp="password"
             value={inputPassword}
             placeholder="Digite sua Senha"
+            eyeStatus={hasEye}
+            onEye={() => setHasEye(!hasEye)}
           />
         </div>
 
@@ -77,9 +80,7 @@ function Login({ tenantInfo }: PropsTenant) {
           </Link>
         </div>
 
-        <Divider
-          size="255px"
-        />
+        <Divider size="255px" />
 
         <Button
           label="Quero me cadastrar"
