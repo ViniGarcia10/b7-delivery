@@ -9,6 +9,7 @@ import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { InputField } from "../../components/InputField";
 import { useAppContext } from "../../context/app";
+import { useAuthContext } from "../../context/auth";
 import { _useApi } from "../../libs/hooks/useApi";
 import styles from "../../styles/Login.module.css";
 
@@ -18,6 +19,7 @@ type PropsTenant = {
 
 function Login({ tenantInfo }: PropsTenant) {
   const { tenant, setTenant } = useAppContext();
+  const { setUser, setToken } = useAuthContext();
   const router = useRouter();
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
@@ -28,6 +30,16 @@ function Login({ tenantInfo }: PropsTenant) {
       setTenant(tenantInfo);
     }
   }, [setTenant, tenant, tenantInfo]);
+
+  const handleSubmit = () => {
+    setToken('123');
+    setUser({
+      email: "viniciusgarcia49@gmail.com",
+      user: "Vinícius Garcia Leão",
+    });
+
+    router.push(`/${tenant?.slug}`);
+  };
 
   return (
     tenant && (
@@ -68,7 +80,7 @@ function Login({ tenantInfo }: PropsTenant) {
           />
         </div>
 
-        <Button label="Entrar" onClick={() => {}} />
+        <Button label="Entrar" onClick={handleSubmit} />
 
         <div className={styles.forget}>
           <p>Esqueceu sua senha?</p>

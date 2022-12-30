@@ -14,7 +14,7 @@ export const ProductItem = ({ data }: PropsItemProduct) => {
   const primaryColor = useAppContext().tenant?.mainColor;
   const secundaryColor = useAppContext().tenant?.secundColor;
   const slug = useAppContext().tenant?.slug;
-  const priceFormatter = useFormatter();
+  const Formatter = useFormatter();
 
   return (
     <Link
@@ -36,14 +36,16 @@ export const ProductItem = ({ data }: PropsItemProduct) => {
             alt="burguer"
           />
           <h3 className={styles.type}>{data.categoryName}</h3>
-          <p className={styles.name}>{data.name}</p>
+          <p className={styles.name}>
+            {Formatter.formatDescriptionCameOnCase(data.name)}
+          </p>
           <span
             className={styles.price}
             style={{
               color: primaryColor,
             }}
           >
-            {priceFormatter.formatPrice(data.price)}
+            {Formatter.formatPrice(data.price)}
           </span>
         </div>
       </div>

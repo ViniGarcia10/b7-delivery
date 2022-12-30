@@ -1,34 +1,51 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Product } from "../../@types/Product";
 import { Tenant } from "../../@types/Tenant";
+import { User } from "../../@types/User";
 import { Banner } from "../../components/banner";
 import { Icon } from "../../components/Icon";
 import { ProductItem } from "../../components/ProductItem";
 import { SearchInput } from "../../components/SearchInput";
 import { Sidebar } from "../../components/Sidebar";
 import { useAppContext } from "../../context/app";
+import { useAuthContext } from "../../context/auth";
 import { _useApi } from "../../libs/hooks/useApi";
 import styles from "../../styles/Home.module.css";
 
 type PropsTenant = {
   tenantInfo: Tenant;
   products: Product[];
+  tokenInfo: string;
+  userInfo: User | null;
 };
 
-function Home({ tenantInfo, products }: PropsTenant) {
+function Home({ tenantInfo, products, tokenInfo, userInfo }: PropsTenant) {
   const { tenant, sidebar, setTenant, setSidebar } = useAppContext();
+  const { setToken, setUser, token, user } = useAuthContext();
   const [listProducts, setListProducts] = useState<Product[]>(products);
+  const [filtredProducts, setFiltredProducts] = useState<Product[]>([]);
+  const [valueSearch, setValueSearch] = useState("");
 
   useEffect(() => {
-    if (tenant != tenantInfo) {
-      setTenant(tenantInfo);
-    }
-  }, [setTenant, tenant, tenantInfo]);
+    setTenant(tenantInfo);
+    setToken(tokenInfo);
 
-  const handleSearch = (handleSearch: string) => {
-    console.log(`Você esta procurando por ${handleSearch}`);
+    if (userInfo) return setUser(userInfo);
+  }, []);
+
+  const handleSearch = (value: string) => {
+    setValueSearch(value);
+
+    let newFiltredProducts = listProducts.filter((item) =>
+      item.name.includes(value.toUpperCase())
+    );
+
+    if (value == "") return setFiltredProducts([]);
+
+    setFiltredProducts(newFiltredProducts);
   };
 
   return (
@@ -82,17 +99,7 @@ function Home({ tenantInfo, products }: PropsTenant) {
           </div>
         </header>
         <main>
-          {false ? (
-            <>
-              <div className={styles.descSearchResult}>
-                Procurando por: <strong>Pizza</strong>
-              </div>
-              <div  className={styles.containerResult}>
-                <Icon name="notIcons" color={tenant?.secundColor} />
-                <h2>Ops! Não há itens com este nome</h2>
-              </div>
-            </>
-          ) : (
+          {valueSearch == "" && (
             <>
               <Banner />
               <div className={styles.grid}>
@@ -101,6 +108,24 @@ function Home({ tenantInfo, products }: PropsTenant) {
                 ))}
               </div>
             </>
+          )}
+
+          {valueSearch != "" && filtredProducts.length <= 0 ? (
+            <>
+              <div className={styles.descSearchResult}>
+                Procurando por: <strong>{valueSearch}</strong>
+              </div>
+              <div className={styles.containerResult}>
+                <Icon name="notIcons" color={tenant?.secundColor} />
+                <h2>Ops! Não há itens <br/> com este nome</h2>
+              </div>
+            </>
+          ) : (
+            <div className={styles.grid}>
+              {filtredProducts.map((item, index) => (
+                <ProductItem key={index} data={item} />
+              ))}
+            </div>
           )}
         </main>
       </div>
@@ -114,18 +139,28 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { tenant: tenantSlug } = ctx.query;
   const api = _useApi(tenantSlug as string);
 
+  //get tenant
   const tenantInfo = await api.getTenant();
 
   if (!tenantInfo) {
     return { redirect: { destination: "/", permanent: false } };
   }
 
+  //get Cookie
+  // const token = ctx.req.cookies.token
+  const tokenInfo = ctx.req.cookies?.token;
+
+  const userInfo = await api.authorizeToken(tokenInfo as string);
+
+  //get All Products
   const products = await api.getAllProducts();
 
   return {
     props: {
       tenantInfo,
       products,
+      tokenInfo,
+      userInfo,
     },
   };
 };

@@ -1,3 +1,4 @@
+import { setCookie } from "cookies-next";
 import { useContext } from "react";
 import { AuthContext } from ".";
 import { User } from "../../@types/User";
@@ -15,6 +16,7 @@ export const useAuthContext = () => {
       });
     },
     setToken: (token: string) => {
+      setCookie("token", token);
       dispatch({
         type: Actions.SET_TOKEN,
         payload: { token },

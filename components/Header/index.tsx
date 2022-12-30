@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useAppContext } from "../../context/app";
-import { useAuthContext } from "../../context/auth";
 import { Button } from "../Button";
 import { Icon } from "../Icon";
 import styles from "./styles.module.css";
@@ -30,9 +29,8 @@ export const Header = ({
   sidebar = false,
 }: PropsHeader) => {
   const { setSidebar, tenant } = useAppContext();
-  const { user } = useAuthContext();
   const [likeItem, setLikeItem] = useState(like);
-
+  
   return (
     <div className={styles.container} style={{ backgroundColor: bgColor }}>
       {leftSide && (
@@ -49,7 +47,7 @@ export const Header = ({
       )}
 
       <div className={styles.centerSide}>
-        {!sidebar ? (
+        {!!title ? (
           <>
             <div className={styles.title} style={{ color: color }}>
               {title}
@@ -57,13 +55,15 @@ export const Header = ({
             <div className={styles.subTitle}>{subTitle}</div>
           </>
         ) : (
-          <Link
-            href={`/${tenant?.slug}/login`}
-            onClick={() => setSidebar(false)}
-            style={{textDecoration: 'none'}}
-          >
-            <Button label="Fazer Login" onClick={() => {}} pd="20px 42px" />
-          </Link>
+          sidebar && (
+            <Link
+              href={`/${tenant?.slug}/login`}
+              onClick={() => setSidebar(false)}
+              style={{ textDecoration: "none" }}
+            >
+              <Button label="Fazer Login" onClick={() => {}} pd="20px 42px" />
+            </Link>
+          )
         )}
       </div>
 

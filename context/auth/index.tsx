@@ -6,7 +6,7 @@ export { useAuthContext } from "./hook";
 
 const initialState: DataType = {
   user: null,
-  token: "",
+  token: '',
 };
 
 export const AuthContext = createContext<ContextType>({

@@ -26,6 +26,7 @@
   color: var(--black-color);
   animation-name: anime;
   animation-duration: 0.3s;
+  text-decoration: none;
 }
 
 @keyframes anime {
